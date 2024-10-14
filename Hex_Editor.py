@@ -116,26 +116,33 @@ def change_trainer_name(new_name, file_path):
          hex_new_name.append(hex_value) ##Appedns it
     hex_new_name.append("50")
 
+    #FIll the remainding chars with 00
     for x in range(7 - len(new_name)):
         hex_new_name.append("00")
 
-    # Convert hex list to byte array
-    hex_bytes = bytes(int(h, 16) for h in hex_new_name)
+
+    # Convert hex string list to actual bytes...goes fomr [90,90,80,80] to  b'\x80\x81\x82'.
+    name_bytes = bytes(int(x, 16) for x in hex_new_name)
+
+
+    #The trainer offset, The `trainer_offset` is defined as `0x2598`, which specifies the location in the save 
+    # file where the trainer's name is stored. We use hexadecimal to represent this offset because it is more compact 
+    # and easier to read than binary. When we open the file in binary mode (`"rb"`), we can seek to this offset and read the 
+    # raw bytes that correspond to the trainer's name. This approach allows us to accurately access and modify the specific data 
+    # stored in the save file.
+    trainer_offset = 0x2598
+    with open(file_path, "r+b") as file:
+        file.seek(trainer_offset)
+        file.write(name_bytes)
+
+    print(f"The new trainer name of {new_name} has been applied")
+
+
+
+
+
+
    
-    # Trainer name is located at offset 0x2590
-    trainer_offset = 0x2590
-
-    try:
-        with open(file_path, "r+b") as file:
-            file.seek(trainer_offset)
-            file.write(hex_bytes)
-            print(f"The trainer name has been changed to {new_name}")
-            
-    except Exeption as e:
-        print(f"Error: {e}")
-
-    print("sadasdasd")
-
 
 
 
