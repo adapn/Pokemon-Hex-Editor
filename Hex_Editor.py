@@ -272,6 +272,32 @@ def save_to_txt(offset, byte_data, decoded_text, output_path="output.txt"):
             txt_file.write(f"Offset: {offset[i]} | Data: {byte_data[i]} | Decoded Text: {decoded_text[i]}\n")
     print(f"Data saved to {output_path}")
 
+
+def read_party(file_path):
+    with open(file_path, "r+b") as file:
+        
+        index = 0x307E
+        poke = []
+        #6 PARTY MEMBERS
+        for x in range(6): 
+            file.seek(index)
+            member_data = (file.read(11)) #11 bytes + padding
+            # Convert each byte to a 2-character hex string
+            hex_values = [f"{byte:02X}" for byte in member_data]
+            # went from b'\x82\x89\x90' to ['82', '89', '90']
+            #convert to a string like "82 89 90"
+            hex_string = " ".join(hex_values)
+
+            member_data = decode(hex_string)
+
+            poke.append(member_data)
+            print(f"Member {x} is named {member_data}!")
+            index +=0xB
+    return poke
+
+
+
+
 # Main logic to run the program
 def main():
     # Example file path, change it to the actual path or pass it as a command-line argument
@@ -288,8 +314,15 @@ def main():
     change_rival_name("AYESHA", file_path)
     set_money(8760, file_path)
 
-    encode("BADGES")
+    encode("GUST")
+
+
+    read_party(file_path)
+
+
     check_sum(file_path)  
+
+
 
 # Execute the main function
 if __name__ == "__main__":
