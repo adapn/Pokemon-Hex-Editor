@@ -275,7 +275,6 @@ def save_to_txt(offset, byte_data, decoded_text, output_path="output.txt"):
 
 def read_party(file_path):
     with open(file_path, "r+b") as file:
-        
         index = 0x307E
         poke = []
         #6 PARTY MEMBERS
@@ -295,8 +294,11 @@ def read_party(file_path):
             index +=0xB
     return poke
 
-
-
+def edit_party(file_path):
+  with open(file_path, "r+b") as file:
+        index = 0x2F2C
+        file.seek(index)
+        file.write(bytes([0x06]))
 
 # Main logic to run the program
 def main():
@@ -314,10 +316,12 @@ def main():
     change_rival_name("AYESHA", file_path)
     set_money(8760, file_path)
 
-    encode("GUST")
+    encode("SCRATCH")
 
 
     read_party(file_path)
+    #edit_party(file_path)
+
 
 
     check_sum(file_path)  
