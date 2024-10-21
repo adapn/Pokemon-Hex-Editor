@@ -1,4 +1,4 @@
-# DC Power Supply Design Project
+# Pokemon Red & Blue Gameboy Hex Editor
 
 ## Table of Contents
 - [Summary](#summary)
